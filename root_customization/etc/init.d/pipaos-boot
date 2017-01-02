@@ -1,0 +1,42 @@
+#!/bin/sh -e
+### BEGIN INIT INFO
+# Provides:          pipaos-boot
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
+# Default-Start:     S
+# Default-Stop:      0 6
+# Short-Description: Prepare wireless credentials.
+# Description:       Prepare wifi credentials from /boot partition into /etc/network
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+case "$1" in
+start)
+
+        cp /boot/interfaces /etc/network
+	log_action_msg "Wifi Credentials copied"
+	log_action_end_msg 0
+	exit 0
+	;;
+
+stop)
+	log_action_end_msg 0
+	;;
+
+reload)
+        cp /boot/interfaces /etc/network
+	log_action_msg "Wifi Credentials copied"
+	log_action_end_msg 0
+	exit 0
+	;;
+
+*)
+	echo "Usage: /etc/init.d/networking {start|stop|reload|restart|force-reload}"
+	exit 1
+	;;
+esac
+
+exit 0
+
+# vim: noet ts=8

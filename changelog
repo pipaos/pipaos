@@ -1,0 +1,24 @@
+Version 4.7
+	Release date: January 2017
+	* Migrated pipaos tools to Debian repository archive.mitako.eu
+	* Built optional custom kernel 4.4.20
+	* Added criu process checkpoint utility for RPI3
+	* Ability to set wireless credentials at /boot partition
+	* New tool pipaos-sonar allows to broadcast IP when headless
+	* Added dispmanX vncserver utility for non-X11 GUI apps
+	* Added pifm tool to broadcast sound files over FM radio
+
+Version 4.6
+	Date: Wed May 25, 2016
+	* Upgraded to kernel 4.4.19
+
+Version 4.5
+	Date: Sat Mar 5, 2016
+	* Upgraded to kernel 4.1.18
+	* Added "pipaos-setwifi" tool to set wireless connection
+
+Version 4.4
+	Date: Thu Feb 25, 2016
+	* Upgraded to latest kernel 4.2.17+
+	* Expanded boot partition to 120MB
+	* Removed avahi-daemon

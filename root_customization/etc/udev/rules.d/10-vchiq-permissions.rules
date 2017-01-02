@@ -1,0 +1,2 @@
+SUBSYSTEM=="vchiq",GROUP="video",MODE="0666"
+SUBSYSTEM=="input",GROUP="tty",MODE="0666"

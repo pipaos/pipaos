@@ -1,0 +1,10 @@
+
+Debianize more tools and apps into pipaos repository
+
+* Servo Blaster: https://github.com/richardghirst/PiBits/tree/master/ServoBlaster
+* QT5 and QTWebengine cross compiled
+
+Fixes and additions
+
+* fix systemd startup errors (alsa amongst other things)
+* time-sync sometimes fails?

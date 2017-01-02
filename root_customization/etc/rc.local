@@ -1,0 +1,17 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# Custom pipaos rc.local boot script
+#
+# Starts pipaos-sonat to find the RaspberryPI on the network.
+#
+# Run this command on a network computer in the same segment,
+# and wait for 15 seconds:
+#
+# $ sudo tcpdump -X -vv -n udp port 5000
+#
+
+/usr/local/bin/pipaos-sonar &
+
+exit 0
