@@ -131,7 +131,7 @@ def install_additional_software(xpipa, custom_kernel=None):
     additional_packages = 'python python-rpi.gpio python3-rpi.gpio raspi-gpio wiringpi ' \
         'libraspberrypi0 raspberrypi-bootloader libraspberrypi-bin alsa-utils ' \
         'firmware-atheros firmware-brcm80211 firmware-libertas firmware-ralink firmware-realtek ' \
-        'firmware-ipw2x00 firmware-zd1211 raspbian-archive-keyring {} {}'.format(user_packages, pipaos_packages)
+        'firmware-zd1211 raspbian-archive-keyring {} {}'.format(user_packages, pipaos_packages)
 
     rc=xpipa.execute('DEBIAN_FRONTEND=noninteractive apt-get install -y {}'.format(additional_packages), pipes=True)
     if rc:
