@@ -5,7 +5,7 @@
 # Prepare a development sysroot after buildall.sh has completed
 #
 
-DEVPKGS="build-essential devscripts debhelper fakeroot libraspberrypi-dev libqt5all-dev libqt5all-cross-tools"
+DEVPKGS="build-essential devscripts debhelper fakeroot libraspberrypi-dev libqt5all-dev libqt5all-cross-tools libqt5all-native-tools"
 
 # xsysroot profile and build log files
 xsysroot_profile="$1"
