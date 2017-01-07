@@ -5,7 +5,8 @@
 # Prepare a development sysroot after buildall.sh has completed
 #
 
-DEVPKGS="build-essential devscripts debhelper fakeroot libraspberrypi-dev libqt5all-dev libqt5all-cross-tools libqt5all-native-tools"
+DEVPKGS="build-essential devscripts debhelper fakeroot git-core \
+libqt5all-dev libqt5webengine-dev libqt5all-cross-tools libqt5all-native-tools"
 
 # xsysroot profile and build log files
 xsysroot_profile="$1"
@@ -34,6 +35,6 @@ else
     echo "xsysroot expanded."
 
     xsysroot -p $xsysroot_profile -x "apt-get update"
-    xsysroot -p $xsysroot_profile -x "apt-get -y install --no-install-recommends ${DEVPKGS}"
+    xsysroot -p $xsysroot_profile -x "apt-get -y install --no-install-recommends $DEVPKGS"
     echo "xsysroot development tools installed."
 fi
