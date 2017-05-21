@@ -127,7 +127,7 @@ def install_additional_software(xpipa, custom_kernel=None):
     custom_kernel is available at: http://pipaos.mitako.eu/download/kernels/kernel-latest-pipaos.tgz
     '''
     user_packages='screen mc crda raspi-config'
-    pipaos_packages='dispmanx-vncserver criu-rpi pifm pipaos-tools'
+    pipaos_packages='dispmanx-vncserver criu-rpi pifm pipaos-tools rpi-monitor'
     additional_packages = 'python python-rpi.gpio python3-rpi.gpio raspi-gpio wiringpi ' \
         'libraspberrypi0 raspberrypi-bootloader libraspberrypi-bin alsa-utils ' \
         'firmware-atheros firmware-brcm80211 firmware-libertas firmware-ralink firmware-realtek ' \
