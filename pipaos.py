@@ -48,10 +48,10 @@ def create_core_image(xpipa):
     cmd_debootstrap='sudo debootstrap --no-check-gpg --verbose --include {} ' \
         '--foreign --variant=minbase --arch={} {} {} {}'
 
-    extra_pkgs='less,sudo,nano,ssh,htop,iptraf,locales,binutils,apt-utils,'\
-        'psmisc,module-init-tools,ifplugd,debconf-utils,bash-completion,ifupdown,'\
-        'ca-certificates,curl,tcpdump,parted,file,time,fake-hwclock,ntp,isc-dhcp-client,dhcpcd5,'\
-        'usbutils,wpasupplicant,iputils-ping,net-tools,wireless-tools,ifplugd,hostapd,dnsmasq,iw,'\
+    extra_pkgs='less,sudo,nano,locales,binutils,apt-utils,'\
+        'psmisc,module-init-tools,debconf-utils,'\
+        'ca-certificates,curl,file,time,'\
+        'iputils-ping,net-tools,'\
         'console-data,kbd,console-setup'
 
     print '>>> Creating pipaOS image with geometry: {}... '.format(geometry)
@@ -128,7 +128,10 @@ def install_additional_software(xpipa, custom_kernel=None):
     '''
     user_packages='screen mc crda raspi-config'
     pipaos_packages='dispmanx-vncserver criu-rpi pifm pipaos-tools rpi-monitor raspi2png'
-    additional_packages = 'python python-rpi.gpio python3-rpi.gpio raspi-gpio wiringpi ' \
+    core_packages='ssh htop iptraf ifplugd bash-completion ifupdown tcpdump parted fake-hwclock ' \
+        'ntp isc-dhcp-client dhcpcd5 usbutils wpasupplicant wireless-tools ifplugd hostapd dnsmasq iw ' \
+        'locales console-data kbd console-setup'
+    additional_packages = core_packages + ' python python-rpi.gpio python3-rpi.gpio raspi-gpio wiringpi ' \
         'libraspberrypi0 raspberrypi-bootloader libraspberrypi-bin alsa-utils ' \
         'firmware-atheros firmware-brcm80211 firmware-libertas firmware-ralink firmware-realtek ' \
         'firmware-zd1211 raspbian-archive-keyring {} {}'.format(user_packages, pipaos_packages)
