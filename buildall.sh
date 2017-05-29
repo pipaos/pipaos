@@ -7,7 +7,7 @@
 
 # xsysroot profile and build log files
 xsysroot_profile="pipaos-build"
-logfile="build-console.log"
+logfile="buildall.log"
 
 # switch to xsysroot profile
 echo "Fetching xsysroot profile..."

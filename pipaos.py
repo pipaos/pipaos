@@ -283,6 +283,9 @@ if __name__=='__main__':
     pipaos_sysroot_file='pipaos-{}-{}-sysroot64.tar.gz'.format(pipaos_codename, __version__)
     sysroot_cmd='sudo tar -zc -C {} . --exclude="./proc" --exclude="./sys" --exclude="./dev" -f {}'.format(
         xpipa.query('sysroot'), pipaos_sysroot_file)
+    rc=os.system(sysroot_cmd)
+    if rc:
+        print '>>> Warning: failure while compressing minimal sysroot image'
 
     print '>>> Installing additional software...'
     if not install_additional_software(xpipa):
