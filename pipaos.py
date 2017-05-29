@@ -48,11 +48,8 @@ def create_core_image(xpipa):
     cmd_debootstrap='sudo debootstrap --no-check-gpg --verbose --include {} ' \
         '--foreign --variant=minbase --arch={} {} {} {}'
 
-    extra_pkgs='less,sudo,nano,locales,binutils,apt-utils,'\
-        'psmisc,module-init-tools,debconf-utils,'\
-        'ca-certificates,curl,file,time,'\
-        'iputils-ping,net-tools,'\
-        'console-data,kbd,console-setup'
+    extra_pkgs='less,sudo,nano,binutils,apt-utils,psmisc,module-init-tools,debconf-utils,'\
+        'ca-certificates,curl,file,time,iputils-ping,net-tools,'
 
     print '>>> Creating pipaOS image with geometry: {}... '.format(geometry)
     success=xsysroot.create_image(geometry)
