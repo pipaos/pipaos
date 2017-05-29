@@ -289,6 +289,11 @@ if __name__=='__main__':
         print 'Error setting up repositories - aborting'
         exit(1)
 
+    print '>>> Creating a compressed minimal sysroot image'
+    pipaos_sysroot_file='pipaos-{}-{}-{}-sysroot64.tar.gz'.format(pipaos_codename, pipaos_mode, __version__)
+    sysroot_cmd='sudo tar -zc -C {} . --exclude="./proc" --exclude="./sys" --exclude="./dev" -f {}'.format(
+        xpipa.query('sysroot'), pipaos_sysroot_file)
+
     print '>>> Installing additional software...'
     if not install_additional_software(xpipa):
         print 'warning: errors installing additional software'
