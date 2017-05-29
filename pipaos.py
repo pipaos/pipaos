@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# pipaos.py - Build pipaOS distro image - console and xgui variants.
+# pipaos.py - Build pipaOS distro image.
 #
 # Copyright (C) 2013-2016 Albert Casals <skarbat@gmail.com>
 #
@@ -164,6 +164,7 @@ def install_additional_software(xpipa, custom_kernel=None):
 def install_xgui(xpipa):
     '''
     Installs a minimal X Desktop running fluxbox
+    TODO: Move this into a repository metapackage: pipaos-xgui
     '''
     xgui_packages = 'fluxbox xinit x11-apps xclip xsel lxterminal xterm xserver-xorg-video-fbturbo'
     rc=xpipa.execute('DEBIAN_FRONTEND=noninteractive apt-get install -y {}'.format(
@@ -247,22 +248,11 @@ def system_cleanup(xpipa):
 
 if __name__=='__main__':
 
-    pipaos_mode='console'
-
     start_time=time.time()
     print '>>> pipaOS build starting on {}'.format(time.ctime())
     if len(sys.argv) < 2:
         print 'Please specify the xsysroot profile for pipaos build'
         sys.exit(1)
-
-    # What kind of image do we build?
-    if len(sys.argv) > 2:
-        if sys.argv[2] == '--with-xgui':
-            print 'Building XGUI version'
-            pipaos_mode='xgui'
-        else:
-            print 'Unrecognized mode: {}'.format(sys.argv[2])
-            exit(1)
 
     # Load the xsysroot profile
     xsysroot_profile=sys.argv[1]
@@ -290,17 +280,13 @@ if __name__=='__main__':
         exit(1)
 
     print '>>> Creating a compressed minimal sysroot image'
-    pipaos_sysroot_file='pipaos-{}-{}-{}-sysroot64.tar.gz'.format(pipaos_codename, pipaos_mode, __version__)
+    pipaos_sysroot_file='pipaos-{}-{}-sysroot64.tar.gz'.format(pipaos_codename, __version__)
     sysroot_cmd='sudo tar -zc -C {} . --exclude="./proc" --exclude="./sys" --exclude="./dev" -f {}'.format(
         xpipa.query('sysroot'), pipaos_sysroot_file)
 
     print '>>> Installing additional software...'
     if not install_additional_software(xpipa):
         print 'warning: errors installing additional software'
-
-    if pipaos_mode == 'xgui':
-        print '>>> Installing XGUI desktop...'
-        install_xgui(xpipa)
 
     print '>>> System customization...'
     if not root_customize(xpipa):
@@ -318,7 +304,7 @@ if __name__=='__main__':
         sys.exit(1)
 
     # The output image to burn to the SD card
-    pipaos_image_file='pipaos-{}-{}-{}.img'.format(pipaos_codename, pipaos_mode, __version__)
+    pipaos_image_file='pipaos-{}-{}.img'.format(pipaos_codename, __version__)
 
     # zero free disk space and convert image
     xpipa.zerofree(xpipa.query('nbdev_part'), verbose=False)
