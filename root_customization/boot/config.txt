@@ -68,3 +68,11 @@ dtparam=audio=on
 enable_uart=1
 
 # for more options see http://elinux.org/RPi_config.txt
+
+# Settings for screen Waveshare 7 Inch Capacitive Touch Screen 
+#max_usb_current=1
+#hdmi_group=2
+#hdmi_mode=87
+#hdmi_cvt 1024 600 60 6 0 0 0
+#hdmi_drive=1
+

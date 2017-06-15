@@ -145,6 +145,7 @@ def install_additional_software(xpipa, custom_kernel=None):
 
     # Stop automatically started services
     xpipa.execute('/etc/init.d/triggerhappy stop')
+    xpipa.execute('/usr/bin/pkill thd')
 
     # Install copies and fills and stop qemu from loading it.
     ld_preload_file='/etc/ld.so.preload'
@@ -159,21 +160,6 @@ def install_additional_software(xpipa, custom_kernel=None):
         rpi_update_url), pipes=True)
 
     return True
-
-
-def install_xgui(xpipa):
-    '''
-    Installs a minimal X Desktop running fluxbox
-    TODO: Move this into a repository metapackage: pipaos-xgui
-    '''
-    xgui_packages = 'fluxbox xinit x11-apps xclip xsel lxterminal xterm xserver-xorg-video-fbturbo'
-    rc=xpipa.execute('DEBIAN_FRONTEND=noninteractive apt-get install -y {}'.format(
-        xgui_packages), pipes=True)
-
-    # Stop automatically started dbus
-    xpipa.execute('service dbus stop')
-
-    return (rc==0)
 
 
 def root_customize(xpipa):
@@ -209,6 +195,9 @@ def root_customize(xpipa):
 
     # force ssh host key regeneration on first boot
     failures += xpipa.execute('insserv regenerate_ssh_host_keys')
+
+    # copy network configuration for first boot
+    failures += xpipa.execute('cp -fv /boot/interfaces.txt /etc/network/interfaces')
 
     return failures == 0
 
