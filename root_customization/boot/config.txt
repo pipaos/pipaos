@@ -67,6 +67,10 @@ dtparam=audio=on
 
 enable_uart=1
 
+# read here before activating the VC4 overlay
+# https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=159853
+#dtoverlay=vc4-fkms-v3d
+
 # for more options see http://elinux.org/RPi_config.txt
 
 # Settings for screen Waveshare 7 Inch Capacitive Touch Screen 
