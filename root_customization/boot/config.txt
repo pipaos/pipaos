@@ -49,7 +49,7 @@
 #arm_freq=800
 
 # flip display (2 means 180 degrees)
-#rotate_display=2
+#display_rotate=2
 
 # Use lcd_rotate if the pointer coordinates are flipped
 lcd_rotate=2
