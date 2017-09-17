@@ -6,7 +6,7 @@
 #
 
 DEVPKGS="build-essential devscripts debhelper fakeroot git-core \
-libqt5all-dev libqt5webengine-dev libx11-dev libpng12-dev"
+libqt5all-dev libqt5webengine-dev libx11-dev libpng12-dev libqt5wayland-dev"
 
 # xsysroot profile and build log files
 xsysroot_profile="$1"
