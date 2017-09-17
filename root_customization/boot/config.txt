@@ -67,6 +67,9 @@ dtparam=audio=on
 
 enable_uart=1
 
+# Most apps today need more GPU memory allocated
+gpu_mem=128
+
 # read here before activating the VC4 overlay
 # https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=159853
 #dtoverlay=vc4-fkms-v3d
