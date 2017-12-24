@@ -83,3 +83,8 @@ gpu_mem=128
 #hdmi_cvt 1024 600 60 6 0 0 0
 #hdmi_drive=1
 
+# improve analogg audio sound quality, also removes hizz
+audio_pwm_mode=2
+
+# Disable bluetooth if you need console debugging with cmdline-serial-console.txt
+#dtoverlay=pi3-disable-bt

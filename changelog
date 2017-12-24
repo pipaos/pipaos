@@ -1,3 +1,13 @@
+Version 5.0
+	Release date: December 2017
+        * Migration to Debian Stretch
+	* Added NSS libraries to find hosts via Bonjour
+	* Added wireless configuration through text file on FAT partition
+	* Added cmdline profile to quickly debug through serial console
+	* Fixed analog sound hizz background noise
+        * Tested on the RaspberryPI zero W
+	* Fixed EGL/GLES paths for legacy QT5 apps
+
 Version 4.7
 	Release date: January 2017
 	* Migrated pipaos tools to Debian repository archive.mitako.eu

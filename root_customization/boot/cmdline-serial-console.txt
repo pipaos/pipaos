@@ -1,1 +1,1 @@
-dwc_otg.lpm_enable=0 logo.nologo root=/dev/mmcblk0p2 rootfstype=ext4 elevator=noop ipv6.disable=1 fsck.repair=yes systemd.log_target=console systemd.log_level=info console=ttyAMA0,115200 kgdboc=ttyAMA0,115200 rootwait
+dwc_otg.lpm_enable=0 net.ifnames=0 logo.nologo root=/dev/mmcblk0p2 rootfstype=ext4 elevator=noop ipv6.disable=1 fsck.repair=yes systemd.log_target=console systemd.log_level=info console=ttyAMA0,115200 kgdboc=ttyAMA0,115200 rootwait

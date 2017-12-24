@@ -24,8 +24,8 @@ import sys
 import time
 import xsysroot
 
-__version__='4.7'
-pipaos_codename='tamarillo'
+__version__='5.0'
+pipaos_codename='stretch'
 
 
 def create_core_image(xpipa):
@@ -34,7 +34,7 @@ def create_core_image(xpipa):
     '''
     repo_url='http://mirror.us.leaseweb.net/raspbian/raspbian/'
     arch='armhf'
-    suite='jessie'
+    suite='stretch'
     boot_size=120 # in MiB
 
     # image size is specified in the xsysroot profile configuration
@@ -48,8 +48,8 @@ def create_core_image(xpipa):
     cmd_debootstrap='sudo debootstrap --no-check-gpg --verbose --include {} ' \
         '--foreign --variant=minbase --arch={} {} {} {}'
 
-    extra_pkgs='less,sudo,nano,binutils,apt-utils,psmisc,module-init-tools,debconf-utils,'\
-        'ca-certificates,curl,file,time,iputils-ping,net-tools,'
+    extra_pkgs='less,sudo,nano,binutils,apt-utils,psmisc,debconf-utils,'\
+        'ca-certificates,curl,file,time,iputils-ping,net-tools,gnupg2'
 
     print '>>> Creating pipaOS image with geometry: {}... '.format(geometry)
     success=xsysroot.create_image(geometry)
@@ -67,11 +67,12 @@ def create_core_image(xpipa):
             return False
         else:
             # Make the image ready to emulate ARM
-            qemu_path=os.popen('which qemu-arm-static').read().strip()
-            rc=os.system('sudo cp {} {}{}'.format(qemu_path, xpipa.query('sysroot'), qemu_path))
-            if rc:
-                print 'Could not copy QEMU ARM emulator in the image - aborting'
-                return False
+            qemu_path_32=os.popen('which qemu-arm-static').read().strip()
+            qemu_path_64=os.popen('which qemu-aarch64-static').read().strip()
+            rc1=os.system('sudo cp {} {}{}'.format(qemu_path_32, xpipa.query('sysroot'), qemu_path_32))
+            rc2=os.system('sudo cp {} {}{}'.format(qemu_path_64, xpipa.query('sysroot'), qemu_path_64))
+            if rc1 or rc2:
+                print 'WARNING: Could not copy QEMU ARM emulators in the image'
 
             print '>>> Installing core OS (Second stage)... '
             rc=xpipa.execute('/debootstrap/debootstrap --second-stage')
@@ -93,12 +94,12 @@ def setup_repositories(xpipa):
     repos = [ 
         { 'name': 'raspbian', 
           'file': 'sources.list',
-          'pointer': 'deb http://archive.raspbian.org/raspbian jessie main contrib non-free',
+          'pointer': 'deb http://archive.raspbian.org/raspbian stretch main contrib non-free',
           'key': 'https://archive.raspbian.org/raspbian.public.key' },
 
         { 'name': 'raspberrypi', 
           'file': 'sources.list.d/raspberrypi.list', 
-          'pointer': 'deb http://archive.raspberrypi.org/debian/ jessie main ui',
+          'pointer': 'deb http://archive.raspberrypi.org/debian/ stretch main ui',
           'key': 'http://archive.raspberrypi.org/debian/raspberrypi.gpg.key' },
 
         { 'name': 'mitako', 
@@ -125,15 +126,16 @@ def install_additional_software(xpipa, custom_kernel=None):
     '''
     user_packages='screen mc crda raspi-config'
     pipaos_packages='dispmanx-vncserver criu-rpi pifm pipaos-tools rpi-monitor raspi2png'
-    core_packages='ssh htop iptraf ifplugd bash-completion ifupdown tcpdump parted fake-hwclock ' \
-        'ntp isc-dhcp-client dhcpcd5 usbutils wpasupplicant wireless-tools ifplugd hostapd dnsmasq iw ' \
+    core_packages='init ssh htop iptraf ifplugd bash-completion ifupdown tcpdump parted fake-hwclock ' \
+        'ntp dhcpcd5 usbutils wpasupplicant wireless-tools ifplugd hostapd iw ' \
         'locales console-data kbd console-setup'
     additional_packages = core_packages + ' python python-rpi.gpio python3-rpi.gpio raspi-gpio wiringpi ' \
-        'libraspberrypi0 raspberrypi-bootloader libraspberrypi-bin alsa-utils ' \
+        'libraspberrypi0 raspberrypi-bootloader libraspberrypi-bin alsa-utils libnss-mdns ' \
         'firmware-atheros firmware-brcm80211 firmware-libertas firmware-ralink firmware-realtek ' \
         'firmware-zd1211 raspbian-archive-keyring {} {}'.format(user_packages, pipaos_packages)
 
-    rc=xpipa.execute('DEBIAN_FRONTEND=noninteractive apt-get install -y {}'.format(additional_packages), pipes=True)
+    rc=xpipa.execute('DEBIAN_FRONTEND=noninteractive ' \
+                     'apt-get install -y {}'.format(additional_packages), pipes=True)
     if rc:
         return False
 
@@ -167,16 +169,23 @@ def root_customize(xpipa):
     Additional system customizations
     '''
     failures=0
-    motd_message='Welcome to pipaOS version {}-{}'.format(pipaos_codename, __version__)
+    motd_message='Running PipaOS version {}-{}'.format(pipaos_codename, __version__)
     root_custom_dir='root_customization'
     hostname='pipaos'
+
+
+    # FIXME: Remove obsolete dangling symlink for network interfaces
+    xpipa.execute('rm -fv /etc/network/interfaces')
 
     # Override system customization files into /etc and /boot
     failures += os.system('sudo cp -rfv {}/etc {}'.format(root_custom_dir, xpipa.query('sysroot')))
     failures +=os.system('sudo cp -rfv {}/boot {}'.format(root_custom_dir, xpipa.query('sysroot')))
 
-    # insert version in login message
-    xpipa.edfile('/etc/motd', motd_message)
+    # Update system library paths - /etc/ld.so.conf.d/*
+    xpipa.execute('ldconf')
+
+    # append version in login message
+    xpipa.edfile('/etc/motd', motd_message, append=True)
 
     # insert pipaOS version file
     xpipa.edfile('/etc/pipaos_version', 'pipaos-{}-{}'.format(pipaos_codename, __version__))
@@ -194,10 +203,15 @@ def root_customize(xpipa):
     failures += xpipa.execute('fake-hwclock save')
 
     # force ssh host key regeneration on first boot
-    failures += xpipa.execute('insserv regenerate_ssh_host_keys')
+    failures += xpipa.execute('systemctl enable regenerate_ssh_host_keys')
+    failures += xpipa.execute('systemctl disable dhcpcd')
 
-    # copy network configuration for first boot
-    failures += xpipa.execute('cp -fv /boot/interfaces.txt /etc/network/interfaces')
+    # symbolic link to setup wireless connection details
+    failures += xpipa.execute('ln -sfv /boot/wpa_supplicant.txt /etc/wpa_supplicant/wpa_supplicant.conf')
+
+    # Fixup symlinks for legacy apps based on EGL/GLES libraries
+    failures += xpipa.execute('ln -sfv -r /opt/vc/lib/libbrcmEGL.so /opt/vc/lib/libEGL.so')
+    failures += xpipa.execute('ln -sfv -r /opt/vc/lib/libbrcmGLESv2.so /opt/vc/lib/libGLESv2.so')
 
     return failures == 0
 
