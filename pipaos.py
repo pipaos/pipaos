@@ -213,6 +213,9 @@ def root_customize(xpipa):
     failures += xpipa.execute('ln -sfv -r /opt/vc/lib/libbrcmEGL.so /opt/vc/lib/libEGL.so')
     failures += xpipa.execute('ln -sfv -r /opt/vc/lib/libbrcmGLESv2.so /opt/vc/lib/libGLESv2.so')
 
+    # Allow sysop and sudoers to not need a password prompt
+    xpipa.edfile('/etc/sudoers', '%sudo   ALL=NOPASSWD: ALL', append=True)
+
     return failures == 0
 
 
