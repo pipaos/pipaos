@@ -7,6 +7,8 @@ Version 5.0
 	* Fixed analog sound hizz background noise
         * Tested on the RaspberryPI zero W
 	* Fixed EGL/GLES paths for legacy QT5 apps
+	* Release QT5 5.10 and Webengine 5.9.4
+	* Added pipaos-lockfs to avoid SDCard corruption
 
 Version 4.7
 	Release date: January 2017

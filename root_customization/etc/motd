@@ -5,3 +5,4 @@ To expand the sdcard, "sudo pipaos-config" and choose the first option.
 To change keyboard layout do "sudo dpkg-reconfigure keyboard-configuration".
 To set your local timezone do "sudo dpkg-reconfigure tzdata".
 Disable the bootup logo with: sudo rm /usr/share/pipaos-tools/logos/default.png
+If you want to avoid sdcard corruption, use sudo pipaos-lockfs

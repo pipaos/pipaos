@@ -202,9 +202,10 @@ def root_customize(xpipa):
     # save the host time into the system so we don't default to 1970
     failures += xpipa.execute('fake-hwclock save')
 
-    # force ssh host key regeneration on first boot
+    # force ssh host key regeneration on first boot, disable dhcp and plymouth
     failures += xpipa.execute('systemctl enable regenerate_ssh_host_keys')
     failures += xpipa.execute('systemctl disable dhcpcd')
+    failures += xpipa.execute('systemctl disable plymouth.service')
 
     # symbolic link to setup wireless connection details
     failures += xpipa.execute('ln -sfv /boot/wpa_supplicant.txt /etc/wpa_supplicant/wpa_supplicant.conf')
