@@ -1,8 +1,1 @@
-Welcome to pipaOS Stretch!
-To set the wireless connection, edit /boot/wpa_supplicant.txt, or "sudo pipaos-setwifi".
-If using ethernet, edit /etc/network/interfaces and reboot.
-To expand the sdcard, "sudo pipaos-config" and choose the first option.
-To change keyboard layout do "sudo dpkg-reconfigure keyboard-configuration".
-To set your local timezone do "sudo dpkg-reconfigure tzdata".
-Disable the bootup logo with: sudo rm /usr/share/pipaos-tools/logos/default.png
-If you want to avoid sdcard corruption, use sudo pipaos-lockfs
+Welcome to pipaOS 5.0 Stretch!
