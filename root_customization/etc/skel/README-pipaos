@@ -13,6 +13,7 @@ Basic tasks:
  * To set your local timezone do "sudo dpkg-reconfigure tzdata".
  * Disable the bootup logo with: sudo rm /usr/share/pipaos-tools/logos/default.png
  * If you want to avoid sdcard corruption, use sudo pipaos-lockfs
+ * To turn your pipaOS into a wireless access point, apt-get install pipaos-accesspoint
 
 The RaspberryPI (Raspberry Pi Marks) is a Trademark of the Raspberry PI Foundation.
 Please visit https://www.raspberrypi.org/ for more information.
