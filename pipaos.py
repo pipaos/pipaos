@@ -130,7 +130,7 @@ def install_additional_software(xpipa, custom_kernel=None):
         'ntp dhcpcd5 usbutils wpasupplicant wireless-tools ifplugd hostapd iw ' \
         'locales console-data kbd console-setup'
     additional_packages = core_packages + ' python python-rpi.gpio python3-rpi.gpio raspi-gpio wiringpi ' \
-        'libraspberrypi0 raspberrypi-bootloader libraspberrypi-bin alsa-utils libnss-mdns ' \
+        'libraspberrypi0 raspberrypi-bootloader libraspberrypi-bin alsa-utils libnss-mdns fbset ' \
         'firmware-atheros firmware-brcm80211 firmware-libertas firmware-ralink firmware-realtek ' \
         'firmware-zd1211 raspbian-archive-keyring {} {}'.format(user_packages, pipaos_packages)
 
@@ -202,9 +202,10 @@ def root_customize(xpipa):
     # save the host time into the system so we don't default to 1970
     failures += xpipa.execute('fake-hwclock save')
 
-    # force ssh host key regeneration on first boot
+    # force ssh host key regeneration on first boot, disable dhcp and plymouth
     failures += xpipa.execute('systemctl enable regenerate_ssh_host_keys')
     failures += xpipa.execute('systemctl disable dhcpcd')
+    failures += xpipa.execute('systemctl disable plymouth.service')
 
     # symbolic link to setup wireless connection details
     failures += xpipa.execute('ln -sfv /boot/wpa_supplicant.txt /etc/wpa_supplicant/wpa_supplicant.conf')
@@ -212,6 +213,9 @@ def root_customize(xpipa):
     # Fixup symlinks for legacy apps based on EGL/GLES libraries
     failures += xpipa.execute('ln -sfv -r /opt/vc/lib/libbrcmEGL.so /opt/vc/lib/libEGL.so')
     failures += xpipa.execute('ln -sfv -r /opt/vc/lib/libbrcmGLESv2.so /opt/vc/lib/libGLESv2.so')
+
+    # Allow sysop and sudoers to not need a password prompt
+    xpipa.edfile('/etc/sudoers', '%sudo   ALL=NOPASSWD: ALL', append=True)
 
     return failures == 0
 

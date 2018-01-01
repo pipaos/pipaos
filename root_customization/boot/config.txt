@@ -52,12 +52,12 @@
 #display_rotate=2
 
 # Use lcd_rotate if the pointer coordinates are flipped
-lcd_rotate=2
+#lcd_rotate=2
 
 # On dual display setup, select HDMI as the primary one
 #display_default_lcd=0
 
-max_usb_current=0
+max_usb_current=1
 
 # Enable core features
 dtparam=i2c_arm=on
@@ -65,7 +65,7 @@ dtparam=i2c1=on
 dtparam=spi=on
 dtparam=audio=on
 
-enable_uart=1
+enable_uart=0
 
 # Most apps today need more GPU memory allocated
 gpu_mem=128
@@ -88,3 +88,6 @@ audio_pwm_mode=2
 
 # Disable bluetooth if you need console debugging with cmdline-serial-console.txt
 #dtoverlay=pi3-disable-bt
+
+# enable option below to signal poweroff to external power source
+#dtoverlay=gpio-poweroff,gpiopin=20,active_low="y"
