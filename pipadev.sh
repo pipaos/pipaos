@@ -5,7 +5,7 @@
 # Prepare a development sysroot after buildall.sh has completed
 #
 
-DEVPKGS="build-essential devscripts debhelper fakeroot git-core libqt5webengine-dev libqt5wayland-dev"
+DEVPKGS="build-essential devscripts debhelper fakeroot git-core libqt5webengine-dev libqt5wayland-dev dh-exec"
 
 # xsysroot profile and build log files
 xsysroot_profile="$1"
