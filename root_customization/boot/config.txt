@@ -91,3 +91,7 @@ audio_pwm_mode=2
 
 # enable option below to signal poweroff to external power source
 #dtoverlay=gpio-poweroff,gpiopin=20,active_low="y"
+
+# DWC2 allows a number of OTG cool features like turning the PI into a USB disk device
+# https://gist.github.com/gbaman/50b6cca61dd1c3f88f41
+#dtoverlay=dwc2
