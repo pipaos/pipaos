@@ -3,7 +3,19 @@ ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 
 network={
-  ssid="myssid"
+  ssid="homessid"
   psk="mypassphrase"
+  id_str="home"
 }
 
+network={
+  ssid="phonessid"
+  psk="mypassphrase"
+  id_str="phone"
+}
+
+network={
+  ssid="otherssid"
+  psk="mypassphrase"
+  id_str="other"
+}
