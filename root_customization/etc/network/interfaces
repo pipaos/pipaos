@@ -11,6 +11,7 @@ iface eth0 inet dhcp
 
 allow-hotplug wlan0
 iface wlan0 inet manual
+    wireless-power off
     wpa-roam /boot/wpa_supplicant.txt
 
 iface default inet dhcp
