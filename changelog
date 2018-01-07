@@ -9,6 +9,9 @@ Version 5.0
 	* Fixed EGL/GLES paths for legacy QT5 apps
 	* Release QT5 5.10 and Webengine 5.9.4
 	* Added pipaos-lockfs to avoid SDCard corruption
+	* Added bootup custom script at init time
+	* Added pipaos-accesspoint turns into a wireless client and AP
+	* Added bootup image
 
 Version 4.7
 	Release date: January 2017
