@@ -128,7 +128,7 @@ def install_additional_software(xpipa, custom_kernel=None):
     pipaos_packages='dispmanx-vncserver criu-rpi pifm pipaos-tools rpi-monitor raspi2png'
     core_packages='init ssh htop iptraf ifplugd bash-completion ifupdown tcpdump parted fake-hwclock ' \
         'ntp dhcpcd5 usbutils wpasupplicant wireless-tools ifplugd hostapd iw ' \
-        'locales console-data kbd console-setup'
+        'locales console-data kbd console-setup rng-tools'
     additional_packages = core_packages + ' python python-rpi.gpio python3-rpi.gpio raspi-gpio wiringpi ' \
         'libraspberrypi0 raspberrypi-bootloader libraspberrypi-bin alsa-utils libnss-mdns fbset ' \
         'firmware-atheros firmware-brcm80211 firmware-libertas firmware-ralink firmware-realtek ' \

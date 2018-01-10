@@ -12,6 +12,7 @@ Version 5.0
 	* Added bootup custom script at init time
 	* Added pipaos-accesspoint turns into a wireless client and AP
 	* Added bootup image
+	* Added rng-tools for better random entropy - i.e. hostapd
 
 Version 4.7
 	Release date: January 2017
