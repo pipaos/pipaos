@@ -72,7 +72,10 @@ gpu_mem=128
 
 # read here before activating the VC4 overlay
 # https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=159853
+#
 #dtoverlay=vc4-fkms-v3d
+#dtoverlay=vc4-kms-v3d,cma-128
+#
 
 # for more options see http://elinux.org/RPi_config.txt
 
