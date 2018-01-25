@@ -1,6 +1,0 @@
-#!/bin/sh -e
-#
-# rc.local
-#
-
-exit 0
