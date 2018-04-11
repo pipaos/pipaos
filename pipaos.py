@@ -182,7 +182,7 @@ def root_customize(xpipa):
     failures +=os.system('sudo cp -rfv {}/boot {}'.format(root_custom_dir, xpipa.query('sysroot')))
 
     # Update system library paths - /etc/ld.so.conf.d/*
-    xpipa.execute('ldconf')
+    xpipa.execute('ldconfig')
 
     # append version in login message
     xpipa.edfile('/etc/motd', motd_message, append=True)
