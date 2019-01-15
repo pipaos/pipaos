@@ -131,8 +131,8 @@ def install_additional_software(xpipa, custom_kernel=None):
         'locales console-data kbd console-setup'
     additional_packages = core_packages + ' python python-rpi.gpio python3-rpi.gpio raspi-gpio wiringpi ' \
         'libraspberrypi0 raspberrypi-bootloader libraspberrypi-bin alsa-utils libnss-mdns fbset ' \
-        'firmware-atheros firmware-brcm80211 firmware-libertas firmware-ralink firmware-realtek ' \
-        'firmware-zd1211 raspbian-archive-keyring {} {}'.format(user_packages, pipaos_packages)
+        'firmware-atheros firmware-brcm80211 firmware-libertas firmware-realtek ' \
+        'firmware-zd1211 {} {}'.format(user_packages, pipaos_packages)
 
     rc=xpipa.execute('DEBIAN_FRONTEND=noninteractive ' \
                      'apt-get install -y {}'.format(additional_packages), pipes=True)
