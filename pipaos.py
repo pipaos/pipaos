@@ -24,8 +24,8 @@ import sys
 import time
 import xsysroot
 
-__version__='5.0'
-pipaos_codename='stretch'
+__version__='6.0'
+pipaos_codename='buster'
 
 
 def create_core_image(xpipa):
@@ -34,7 +34,7 @@ def create_core_image(xpipa):
     '''
     repo_url='http://mirror.us.leaseweb.net/raspbian/raspbian/'
     arch='armhf'
-    suite='stretch'
+    suite='buster'
     boot_size=120 # in MiB
 
     # image size is specified in the xsysroot profile configuration
@@ -94,12 +94,12 @@ def setup_repositories(xpipa):
     repos = [ 
         { 'name': 'raspbian', 
           'file': 'sources.list',
-          'pointer': 'deb http://archive.raspbian.org/raspbian stretch main contrib non-free',
-          'key': 'https://archive.raspbian.org/raspbian.public.key' },
+          'pointer': 'deb http://archive.raspbian.org/raspbian buster main contrib non-free',
+          'key': 'http://archive.raspbian.org/raspbian.public.key' },
 
         { 'name': 'raspberrypi', 
           'file': 'sources.list.d/raspberrypi.list', 
-          'pointer': 'deb http://archive.raspberrypi.org/debian/ stretch main ui',
+          'pointer': 'deb http://archive.raspberrypi.org/debian/ buster main ui',
           'key': 'http://archive.raspberrypi.org/debian/raspberrypi.gpg.key' },
 
         { 'name': 'mitako', 
@@ -128,7 +128,7 @@ def install_additional_software(xpipa, custom_kernel=None):
     pipaos_packages='dispmanx-vncserver criu-rpi pifm pipaos-tools rpi-monitor raspi2png'
     core_packages='init ssh htop iptraf ifplugd bash-completion ifupdown tcpdump parted fake-hwclock ' \
         'ntp dhcpcd5 usbutils wpasupplicant wireless-tools ifplugd hostapd iw ' \
-        'locales console-data kbd console-setup'
+        'locales console-data kbd console-setup rpi-update'
     additional_packages = core_packages + ' python python-rpi.gpio python3-rpi.gpio raspi-gpio wiringpi ' \
         'libraspberrypi0 raspberrypi-bootloader libraspberrypi-bin alsa-utils libnss-mdns fbset ' \
         'firmware-atheros firmware-brcm80211 firmware-libertas firmware-realtek ' \
@@ -156,11 +156,6 @@ def install_additional_software(xpipa, custom_kernel=None):
     xpipa.execute('sudo mv -f {} {}-disabled'.format(
             ld_sysroot_preload_file, os.path.join(xpipa.query('sysroot'), ld_preload_file)))
 
-    # Install rpi-update tool
-    rpi_update_url='https://raw.githubusercontent.com/Hexxeh/rpi-update/master/rpi-update'
-    xpipa.execute('curl -L --output /usr/bin/rpi-update {} && chmod +x /usr/bin/rpi-update'.format(
-        rpi_update_url), pipes=True)
-
     return True
 
 
@@ -179,7 +174,7 @@ def root_customize(xpipa):
 
     # Override system customization files into /etc and /boot
     failures += os.system('sudo cp -rfv {}/etc {}'.format(root_custom_dir, xpipa.query('sysroot')))
-    failures +=os.system('sudo cp -rfv {}/boot {}'.format(root_custom_dir, xpipa.query('sysroot')))
+    failures += os.system('sudo cp -rfv {}/boot {}'.format(root_custom_dir, xpipa.query('sysroot')))
 
     # Update system library paths - /etc/ld.so.conf.d/*
     xpipa.execute('ldconfig')
@@ -255,6 +250,8 @@ def system_cleanup(xpipa):
 
 if __name__=='__main__':
 
+    compressed_sysroot=False
+
     start_time=time.time()
     print '>>> pipaOS build starting on {}'.format(time.ctime())
     if len(sys.argv) < 2:
@@ -286,13 +283,14 @@ if __name__=='__main__':
         print 'Error setting up repositories - aborting'
         exit(1)
 
-    print '>>> Creating a compressed minimal sysroot image'
-    pipaos_sysroot_file='pipaos-{}-{}-sysroot64.tar.gz'.format(pipaos_codename, __version__)
-    sysroot_cmd='sudo tar -zc -C {} . --exclude="./proc" --exclude="./sys" --exclude="./dev" -f {}'.format(
-        xpipa.query('sysroot'), pipaos_sysroot_file)
-    rc=os.system(sysroot_cmd)
-    if rc:
-        print '>>> Warning: failure while compressing minimal sysroot image'
+    if compressed_sysroot:
+        print '>>> Creating a compressed minimal sysroot image'
+        pipaos_sysroot_file='pipaos-{}-{}-sysroot64.tar.gz'.format(pipaos_codename, __version__)
+        sysroot_cmd='sudo tar -zc -C {} . --exclude="./proc" --exclude="./sys" --exclude="./dev" -f {}'.format(
+            xpipa.query('sysroot'), pipaos_sysroot_file)
+        rc=os.system(sysroot_cmd)
+        if rc:
+            print '>>> Warning: failure while compressing minimal sysroot image'
 
     print '>>> Installing additional software...'
     if not install_additional_software(xpipa):
